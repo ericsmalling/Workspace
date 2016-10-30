@@ -16,3 +16,10 @@
     co = checkout
     df = diff
     lg = log
+
+[user]
+        name = Smalling, Eric A
+        email = github@ericsmalling.com
+        
+[credential]
+    helper = cache --timeout 30000
