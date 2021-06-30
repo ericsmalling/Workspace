@@ -1,0 +1,3 @@
+#!/bin/bash
+MVN_IMAGE=maven:3-openjdk-8
+mvn "$@"
