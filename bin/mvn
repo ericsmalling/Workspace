@@ -1,3 +1,3 @@
 #!/bin/bash
 MVN_IMAGE="${MVN_IMAGE:-maven:3}"
-docker run --rm -it -v$(pwd):/src -v$HOME/.m2:/home/root/.m2  $MVN_IMAGE mvn -f /src/pom.xml "$@"
+docker run --rm -it -v$(pwd):/src -v$HOME/.m2:/root/.m2  $MVN_IMAGE mvn -f /src/pom.xml "$@"
