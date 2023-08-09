@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Set the IFS variable to a newline character
+IFS=$'\n'
+
+# Get the list of docker images
+images=$(docker images -a)
+
+# Loop through the list of images
+for image in $images; do
+  # Skip the header line
+    if [[ $image == *"REPOSITORY"* ]]; then
+        printf "%s   \t%s\n" "$image" "ARCHITECTURE"
+        continue
+    fi
+
+  # Get the architecture of the image
+  id=$(echo $image | awk '{print $3}')
+  architecture=$(docker image inspect $id | jq -r '.[].Architecture')
+
+  # Append the architecture to the end of the line, color architecure red if not same as this machine  
+  if [[ $architecture != $(uname -m) ]]; then
+    color="$(tput setaf 1)"
+  else
+    color=""
+  fi
+
+  printf "%s \t%s%s\e[0m\n" "$image" "$color" "$architecture"
+done
