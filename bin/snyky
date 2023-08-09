@@ -1,0 +1,42 @@
+#!/bin/bash
+source constants.sh
+PREFIX=""
+CMD="snyk $@"
+
+# detect if 1Password CLI "op" command is in path
+if command -v op &> /dev/null; then
+  # detect if 1Password CLI "snyk" plugin is installed
+  if [ $(op plugin inspect snyk | grep "Alias for \"snyk\" configure" | wc -l) -eq 1 ]; then
+    PREFIX="op plugin run -- "
+  fi
+fi
+
+if [ "$1" == "container" ] && [ "$2" == "test" ]; then
+
+  # get the architecture of the machine
+  machine_arch=$(uname -m)
+  if [ "$machine_arch" == "aarch64" ]; then
+    machine_arch="arm64"
+  fi
+
+  # get the aritecture of the image being scanned (assumes it will always be the 3rd argument)
+  image_arch=$(docker image inspect $3 | jq -r '.[].Architecture')
+
+  # if container arch doesn't match machine arch and --platform isn't set to match machine arch, prompt user to add correct platform
+  if [ "$image_arch" != "$machine_arch" ] && [[ "$@" != *"--platform=linux/${image_arch}"* ]]; then
+    echo "${WARNING}: Machine arch is ${COLOR_BRIGHT_BLUE}${UNDERLINE}${machine_arch}${COLOR_RESET} machine, but the image you are scanning is built for ${COLOR_BRIGHT_BLUE}${UNDERLINE}$image_arch${COLOR_RESET}."
+    read -p " ❓ Add ${COLOR_GREEN}--platform=linux/${image_arch}${COLOR_RESET} to your command line? [y/N] " -n 1 -r
+    echo
+
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      CMD="$CMD --platform=linux/${image_arch}"
+      echo
+      echo " 🪄  New command line is: ${BOLD}${CMD}${COLOR_RESET}"
+      echo
+    fi
+  fi
+fi
+
+${PREFIX}${CMD}
+exit $?
+

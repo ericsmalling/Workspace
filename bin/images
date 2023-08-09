@@ -14,12 +14,18 @@ for image in $images; do
         continue
     fi
 
+machine_arch=$(uname -m)
+if [ "$machine_arch" == "aarch64" ]; then
+  machine_arch="arm64"
+fi
+
   # Get the architecture of the image
   id=$(echo $image | awk '{print $3}')
   architecture=$(docker image inspect $id | jq -r '.[].Architecture')
 
+
   # Append the architecture to the end of the line, color architecure red if not same as this machine  
-  if [[ $architecture != $(uname -m) ]]; then
+  if [[ $architecture != $machine_arch ]]; then
     color="$(tput setaf 1)"
   else
     color=""

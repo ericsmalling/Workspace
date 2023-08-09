@@ -1,0 +1,26 @@
+COLOR_RESET=$(tput sgr0)
+COLOR_RED=$(tput setaf 1)
+COLOR_GREEN=$(tput setaf 2)
+COLOR_YELLOW=$(tput setaf 3)
+COLOR_BLUE=$(tput setaf 4)
+COLOR_PURPLE=$(tput setaf 5)
+COLOR_CYAN=$(tput setaf 6)
+COLOR_WHITE=$(tput setaf 8)
+COLOR_CORAL=$(tput setaf 9)
+COLOR_BRIGHT_GREEN=$(tput setaf 10)
+COLOR_BRIGHT_YELLOW=$(tput setaf 11)
+COLOR_BRIGHT_BLUE=$(tput setaf 12)
+COLOR_BRIGHT_PURPLE=$(tput setaf 13)
+COLOR_BRIGHT_CYAN=$(tput setaf 14)
+COLOR_BRIGHT_WHITE=$(tput setaf 15)
+COLOR_BLACK=$(tput setaf 16)
+COLOR_VERY_DARK_BLUE=$(tput setaf 17)
+COLOR_DARK_BLUE=$(tput setaf 18)
+BOLD=$(tput bold)
+UNDERLINE=$(tput smul)
+REVERSE=$(tput rev)
+
+WARNING="${COLOR_YELLOW}WARNING${COLOR_RESET}"
+ERROR="${COLOR_RED}ERROR${COLOR_RESET}"
+INFO="${COLOR_CYAN}INFO${COLOR_RESET}"
+SUCCESS="${COLOR_GREEN}SUCCESS${COLOR_RESET}"
